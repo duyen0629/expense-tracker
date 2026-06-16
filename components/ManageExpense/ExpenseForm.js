@@ -3,6 +3,7 @@ import Input from "./Input";
 import { useState } from "react";
 import Button from "../UI/Button";
 import { getFormattedDate } from "../../util/date";
+import { GlobalStyles } from "../../constants/styles";
 
 function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
   const [inputs, setInputs] = useState({
@@ -49,6 +50,7 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
         <Input
           style={styles.rowInput}
           label="Amount"
+          invalid={!inputs.amount.isValid}
           textInputConfig={{
             keyboardType: "decimal-pad",
             onChangeText: inputChangeHandler.bind(this, "amount"),
@@ -58,6 +60,7 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
         <Input
           style={styles.rowInput}
           label="Date"
+          invalid={!inputs.date.isValid}
           textInputConfig={{
             placeholder: "YYYY-MM-DD",
             maxLength: 10,
@@ -68,6 +71,7 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
       </View>
       <Input
         label="Description"
+        invalid={!inputs.description.isValid}
         textInputConfig={{
           multiline: true,
           maxLength: 50,
@@ -75,7 +79,7 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
           value: inputs.description.value,
         }}
       />
-      {formIsInvalid && <Text>Invalid input values - please check your entered values</Text>}
+      {formIsInvalid && <Text style={styles.errorText}>Invalid input values - please check your entered values</Text>}
       <View style={styles.buttons}>
         <Button mode="flat" style={styles.button} onPress={onCancel}>
           Cancel
@@ -108,6 +112,11 @@ const styles = StyleSheet.create({
   },
   rowInput: {
     flex: 1,
+  },
+  errorText: {
+    textAlign: "center",
+    color: GlobalStyles.colors.error500,
+    margin: 8,
   },
   buttons: {
     flexDirection: "row",
