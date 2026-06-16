@@ -2,7 +2,7 @@ import { View } from "react-native";
 import ExpensesSummary from "./ExpensesSummary";
 import ExpensesList from "./ExpensesList";
 
-export const DUMMY_EXPENSES = [
+const DUMMY_EXPENSES = [
   {
     id: "e1",
     description: "A pair of shoes",
@@ -35,7 +35,7 @@ export const DUMMY_EXPENSES = [
   },
 ];
 
-function ExpensesOutput({ expenses, periodName }) {
+function ExpensesOutput({ periodName }) {
   return (
     <View>
       <ExpensesSummary periodName="Last 7 Days" expenses={DUMMY_EXPENSES} />
