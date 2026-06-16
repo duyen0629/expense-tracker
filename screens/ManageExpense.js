@@ -20,19 +20,11 @@ function ManageExpense({ route, navigation }) {
   const cancelHandler = () => {
     navigation.goBack();
   };
-  const confirmHandler = () => {
+  const confirmHandler = (expenseData) => {
     if (isEditing) {
-      expensesContext.updateExpense(expenseId, {
-        description: "Test Updated",
-        amount: 100,
-        date: new Date(),
-      });
+      expensesContext.updateExpense(expenseId, expenseData);
     } else {
-      expensesContext.addExpense({
-        description: "Test Added",
-        amount: 100,
-        date: new Date(),
-      });
+      expensesContext.addExpense(expenseData);
     }
     navigation.goBack();
   };
