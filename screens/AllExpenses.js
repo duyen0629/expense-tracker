@@ -1,8 +1,16 @@
 import { StyleSheet } from "react-native";
 import ExpensesOutput from "../components/Expenses/ExpensesOutput";
+import { ExpensesContext } from "../store/expenses-context";
+import { useContext } from "react";
 
 function AllExpenses() {
-  return <ExpensesOutput periodName="Last 7 Days" />;
+  const expensesContext = useContext(ExpensesContext);
+  return (
+    <ExpensesOutput
+      expenses={expensesContext.expenses}
+      periodName="Last 7 Days"
+    />
+  );
 }
 
 export default AllExpenses;

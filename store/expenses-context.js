@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { useReducer } from "react";
 
-export const DUMMY_EXPENSES = [
+const DUMMY_EXPENSES = [
   {
     id: "e1",
     description: "A pair of shoes",
@@ -121,5 +121,17 @@ function ExpensesContextProvider({ children }) {
     dispatch({ type: "UPDATE", payload: { id, expense: expenseData } });
   };
 
-  return <ExpensesContext.Provider>{children}</ExpensesContext.Provider>;
+  const value = {
+    expenses: expensesState,
+    addExpense,
+    deleteExpense,
+    updateExpense,
+  };
+  return (
+    <ExpensesContext.Provider value={value}>
+      {children}
+    </ExpensesContext.Provider>
+  );
 }
+
+export default ExpensesContextProvider;
