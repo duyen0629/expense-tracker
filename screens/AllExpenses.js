@@ -8,7 +8,8 @@ function AllExpenses() {
   return (
     <ExpensesOutput
       expenses={expensesContext.expenses}
-      periodName="Last 7 Days"
+      periodName="Total"
+      fallbackText="No registered expenses found."
     />
   );
 }
