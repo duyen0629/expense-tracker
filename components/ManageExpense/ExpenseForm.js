@@ -31,9 +31,9 @@ function ExpenseForm() {
       <Input
         label="Description"
         textInputConfig={{
-          onChangeText: descriptionChangeHandler,
           multiline: true,
           maxLength: 50,
+          onChangeText: descriptionChangeHandler,
         }}
       />
     </View>
