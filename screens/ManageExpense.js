@@ -1,13 +1,14 @@
 import { View, StyleSheet } from "react-native";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useContext, useState } from "react";
 import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/styles";
 import { ExpensesContext } from "../store/expenses-context";
-import { useContext } from "react";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 import { storeExpense, updateExpense, deleteExpense } from "../util/http";
+import LoadingOverlay from "../components/UI/LoadingOverlay";
 
 function ManageExpense({ route, navigation }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const expensesContext = useContext(ExpensesContext);
   const expenseId = route.params?.expenseId;
   const isEditing = !!expenseId;
@@ -24,6 +25,7 @@ function ManageExpense({ route, navigation }) {
     navigation.goBack();
   };
   const confirmHandler = async (expenseData) => {
+    setIsSubmitting(true);
     if (isEditing) {
       expensesContext.updateExpense(expenseId, expenseData);
       await updateExpense(expenseId, expenseData);
@@ -35,10 +37,17 @@ function ManageExpense({ route, navigation }) {
   };
 
   const deleteExpenseHandler = async () => {
-    expensesContext.deleteExpense(expenseId);
+    setIsSubmitting(true);
     await deleteExpense(expenseId);
+    expensesContext.deleteExpense(expenseId);
+    // setIsSubmitting(false); but no need because navigation back anyway
+
     navigation.goBack();
   };
+
+  if (isSubmitting) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <View style={styles.container}>
