@@ -5,7 +5,7 @@ import { GlobalStyles } from "../constants/styles";
 import { ExpensesContext } from "../store/expenses-context";
 import { useContext } from "react";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
-import { storeExpense } from "../util/http";
+import { storeExpense, updateExpense, deleteExpense } from "../util/http";
 
 function ManageExpense({ route, navigation }) {
   const expensesContext = useContext(ExpensesContext);
@@ -26,14 +26,17 @@ function ManageExpense({ route, navigation }) {
   const confirmHandler = async (expenseData) => {
     if (isEditing) {
       expensesContext.updateExpense(expenseId, expenseData);
+      await updateExpense(expenseId, expenseData);
     } else {
       const id = await storeExpense(expenseData);
       expensesContext.addExpense({ id, ...expenseData });
     }
     navigation.goBack();
   };
-  const deleteExpenseHandler = () => {
+
+  const deleteExpenseHandler = async () => {
     expensesContext.deleteExpense(expenseId);
+    await deleteExpense(expenseId);
     navigation.goBack();
   };
 
