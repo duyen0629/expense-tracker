@@ -6,9 +6,11 @@ import { ExpensesContext } from "../store/expenses-context";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 import { storeExpense, updateExpense, deleteExpense } from "../util/http";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
+import ErrorOverlay from "../components/UI/ErrorOverlay";
 
 function ManageExpense({ route, navigation }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState();
   const expensesContext = useContext(ExpensesContext);
   const expenseId = route.params?.expenseId;
   const isEditing = !!expenseId;
@@ -26,27 +28,41 @@ function ManageExpense({ route, navigation }) {
   };
   const confirmHandler = async (expenseData) => {
     setIsSubmitting(true);
-    if (isEditing) {
-      expensesContext.updateExpense(expenseId, expenseData);
-      await updateExpense(expenseId, expenseData);
-    } else {
-      const id = await storeExpense(expenseData);
-      expensesContext.addExpense({ id, ...expenseData });
+    try {
+      if (isEditing) {
+        expensesContext.updateExpense(expenseId, expenseData);
+        await updateExpense(expenseId, expenseData);
+      } else {
+        const id = await storeExpense(expenseData);
+        expensesContext.addExpense({ id, ...expenseData });
+      }
+      navigation.goBack();
+    } catch (error) {
+      setError("Failed to save expense");
+    } finally {
+      setIsSubmitting(false);
     }
-    navigation.goBack();
   };
 
   const deleteExpenseHandler = async () => {
     setIsSubmitting(true);
-    await deleteExpense(expenseId);
-    expensesContext.deleteExpense(expenseId);
-    // setIsSubmitting(false); but no need because navigation back anyway
-
-    navigation.goBack();
+    try {
+      await deleteExpense(expenseId);
+      expensesContext.deleteExpense(expenseId);
+      navigation.goBack();
+    } catch (error) {
+      setError("Failed to delete expense");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubmitting) {
     return <LoadingOverlay />;
+  }
+
+  if (error) {
+    return <ErrorOverlay message={error} onConfirm={() => setError(null)} />;
   }
 
   return (
