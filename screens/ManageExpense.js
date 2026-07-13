@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { useLayoutEffect, useContext, useState } from "react";
 import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/styles";
@@ -66,7 +66,7 @@ function ManageExpense({ route, navigation }) {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <ExpenseForm
         onCancel={cancelHandler}
         onSubmit={confirmHandler}
@@ -79,7 +79,7 @@ function ManageExpense({ route, navigation }) {
           <IconButton icon="trash" color={GlobalStyles.colors.error500} size={36} onPress={deleteExpenseHandler} />
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 }
 
@@ -88,8 +88,10 @@ export default ManageExpense;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
     backgroundColor: GlobalStyles.colors.primary800,
+  },
+  contentContainer: {
+    padding: 24,
   },
   deleteIconContainer: {
     marginTop: 16,

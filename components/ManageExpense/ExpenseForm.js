@@ -1,15 +1,20 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, Platform } from "react-native";
 import Input from "./Input";
 import { useState } from "react";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import Button from "../UI/Button";
-import { getFormattedDate } from "../../util/date";
+import { getFormattedDate, parseFormattedDate } from "../../util/date";
 import { GlobalStyles } from "../../constants/styles";
 import { CATEGORIES, DEFAULT_CATEGORY } from "../../constants/categories";
 
 function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [inputs, setInputs] = useState({
     amount: { value: defaultValues ? defaultValues.amount.toString() : "", isValid: true },
-    date: { value: defaultValues ? getFormattedDate(defaultValues.date) : "", isValid: true },
+    date: {
+      value: defaultValues ? getFormattedDate(defaultValues.date) : getFormattedDate(new Date()),
+      isValid: true,
+    },
     description: { value: defaultValues ? defaultValues.description : "", isValid: true },
     category: {
       value: defaultValues?.category || DEFAULT_CATEGORY,
@@ -23,10 +28,22 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
     });
   }
 
+  function dateChangeHandler(event, selectedDate) {
+    if (Platform.OS === "android") {
+      setShowDatePicker(false);
+    }
+
+    if (event.type === "dismissed" || !selectedDate) {
+      return;
+    }
+
+    inputChangeHandler("date", getFormattedDate(selectedDate));
+  }
+
   function submitHandler() {
     const expenseData = {
       amount: +inputs.amount.value,
-      date: new Date(inputs.date.value),
+      date: parseFormattedDate(inputs.date.value),
       description: inputs.description.value,
       category: inputs.category.value,
     };
@@ -70,18 +87,33 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
             value: inputs.amount.value,
           }}
         />
-        <Input
-          style={styles.rowInput}
-          label="Date"
-          invalid={!inputs.date.isValid}
-          textInputConfig={{
-            placeholder: "YYYY-MM-DD",
-            maxLength: 10,
-            onChangeText: inputChangeHandler.bind(this, "date"),
-            value: inputs.date.value,
-          }}
-        />
+        <View style={[styles.rowInput, styles.dateField]}>
+          <Text style={[styles.dateLabel, !inputs.date.isValid && styles.invalidLabel]}>Date</Text>
+          <Pressable
+            onPress={() => setShowDatePicker((current) => !current)}
+            style={[styles.dateButton, !inputs.date.isValid && styles.invalidInput]}
+          >
+            <Text style={styles.dateButtonText}>{inputs.date.value}</Text>
+          </Pressable>
+        </View>
       </View>
+      {showDatePicker && (
+        <View style={styles.datePickerContainer}>
+          <DateTimePicker
+            value={parseFormattedDate(inputs.date.value)}
+            mode="date"
+            display={Platform.OS === "ios" ? "inline" : "default"}
+            onChange={dateChangeHandler}
+            themeVariant="dark"
+            accentColor={GlobalStyles.colors.accent500}
+          />
+          {Platform.OS === "ios" && (
+            <Button style={styles.dateDoneButton} onPress={() => setShowDatePicker(false)}>
+              Done
+            </Button>
+          )}
+        </View>
+      )}
       <Input
         label="Description"
         invalid={!inputs.description.isValid}
@@ -149,6 +181,44 @@ const styles = StyleSheet.create({
   rowInput: {
     flex: 1,
   },
+  dateField: {
+    marginHorizontal: 4,
+    marginVertical: 8,
+  },
+  dateLabel: {
+    fontSize: 12,
+    color: GlobalStyles.colors.primary100,
+    marginBottom: 4,
+  },
+  dateButton: {
+    backgroundColor: GlobalStyles.colors.primary100,
+    padding: 6,
+    borderRadius: 6,
+    minHeight: 36,
+    justifyContent: "center",
+  },
+  dateButtonText: {
+    fontSize: 18,
+    color: GlobalStyles.colors.primary700,
+  },
+  datePickerContainer: {
+    marginHorizontal: 4,
+    marginBottom: 8,
+    backgroundColor: GlobalStyles.colors.primary100,
+    borderRadius: 6,
+    overflow: "hidden",
+    alignItems: "center",
+  },
+  dateDoneButton: {
+    marginVertical: 8,
+    minWidth: 120,
+  },
+  invalidLabel: {
+    color: GlobalStyles.colors.error500,
+  },
+  invalidInput: {
+    backgroundColor: GlobalStyles.colors.error50,
+  },
   categoryContainer: {
     marginHorizontal: 4,
     marginVertical: 8,
@@ -157,9 +227,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: GlobalStyles.colors.primary100,
     marginBottom: 8,
-  },
-  invalidLabel: {
-    color: GlobalStyles.colors.error500,
   },
   categoryRow: {
     flexDirection: "row",
