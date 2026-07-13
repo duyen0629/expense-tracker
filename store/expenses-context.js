@@ -4,9 +4,9 @@ import { useReducer } from "react";
 export const ExpensesContext = createContext({
   expenses: [],
   setExpenses: (expenses) => {},
-  addExpense: ({ description, amount, date }) => {},
+  addExpense: ({ description, amount, date, category }) => {},
   deleteExpense: (id) => {},
-  updateExpense: (id, { description, amount, date }) => {},
+  updateExpense: (id, { description, amount, date, category }) => {},
 });
 
 function expensesReducer(state, action) {
@@ -16,8 +16,7 @@ function expensesReducer(state, action) {
       return inverted;
     }
     case "ADD": {
-      const id = new Date().toString() + Math.random().toString();
-      return [...state, { ...action.payload, id }];
+      return [action.payload, ...state];
     }
     case "DELETE":
       return state.filter((expense) => expense.id !== action.payload);

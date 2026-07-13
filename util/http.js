@@ -1,4 +1,5 @@
 import axios from "axios";
+import { DEFAULT_CATEGORY } from "../constants/categories";
 
 const BACKEND_URL = "https://chloe-react-native-default-rtdb.firebaseio.com/";
 
@@ -17,6 +18,7 @@ export async function fetchExpenses() {
       amount: response.data[key].amount,
       date: new Date(response.data[key].date),
       description: response.data[key].description,
+      category: response.data[key].category || DEFAULT_CATEGORY,
     });
   }
   return expenses;

@@ -1,9 +1,10 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { GlobalStyles } from "../../constants/styles";
 import { getFormattedDate } from "../../util/date";
+import { getCategoryLabel } from "../../constants/categories";
 import { useNavigation } from "@react-navigation/native";
 
-function ExpenseItem({ id, description, amount, date }) {
+function ExpenseItem({ id, description, amount, date, category }) {
   const navigation = useNavigation();
   const expensePressHandler = () => {
     navigation.navigate("ManageExpense", {
@@ -17,11 +18,12 @@ function ExpenseItem({ id, description, amount, date }) {
       style={({ pressed }) => pressed && styles.pressed}
     >
       <View style={styles.expenseItem}>
-        <View>
+        <View style={styles.details}>
           <Text style={[styles.textBase, styles.description]}>
             {description}
           </Text>
           <Text style={styles.textBase}>{getFormattedDate(date)}</Text>
+          <Text style={styles.category}>{getCategoryLabel(category)}</Text>
         </View>
         <View style={styles.amountContainer}>
           <Text style={styles.amount}>${amount.toFixed(2)}</Text>
@@ -50,6 +52,10 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.4,
   },
+  details: {
+    flex: 1,
+    marginRight: 12,
+  },
   textBase: {
     color: GlobalStyles.colors.primary50,
   },
@@ -57,6 +63,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 4,
+  },
+  category: {
+    marginTop: 4,
+    fontSize: 12,
+    fontWeight: "600",
+    color: GlobalStyles.colors.accent500,
   },
   amountContainer: {
     fontSize: 16,
