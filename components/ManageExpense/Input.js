@@ -12,7 +12,7 @@ function Input({ style, invalid, label, textInputConfig }) {
   return (
     <View style={[styles.inputContainer, style]}>
       <Text style={[styles.label, invalid && styles.invalidLabel]}>{label}</Text>
-      <TextInput style={[inputStyles]} {...textInputConfig} />
+      <TextInput style={inputStyles} {...textInputConfig} placeholderTextColor={GlobalStyles.colors.gray500} />
     </View>
   );
 }
@@ -26,15 +26,19 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 12,
-    color: GlobalStyles.colors.primary100,
-    marginBottom: 4,
+    fontWeight: "700",
+    color: GlobalStyles.colors.surface,
+    marginBottom: 6,
   },
   input: {
-    backgroundColor: GlobalStyles.colors.primary100,
-    padding: 6,
-    borderRadius: 6,
-    fontSize: 18,
-    color: GlobalStyles.colors.primary700,
+    backgroundColor: GlobalStyles.colors.surface,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 14,
+    fontSize: 16,
+    color: GlobalStyles.colors.primary800,
+    borderWidth: 1,
+    borderColor: GlobalStyles.colors.primary100,
   },
   inputMultiline: {
     minHeight: 100,
@@ -45,5 +49,6 @@ const styles = StyleSheet.create({
   },
   invalidInput: {
     backgroundColor: GlobalStyles.colors.error50,
+    borderColor: GlobalStyles.colors.error500,
   },
 });

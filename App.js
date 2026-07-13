@@ -18,19 +18,32 @@ function ExpensesOverview() {
     <BottomTabs.Navigator
       screenOptions={({ navigation }) => ({
         headerStyle: {
-          backgroundColor: GlobalStyles.colors.primary500,
+          backgroundColor: GlobalStyles.colors.header,
         },
-        headerTintColor: "white",
+        headerTintColor: GlobalStyles.colors.primary800,
+        headerTitleStyle: {
+          fontWeight: "800",
+          color: GlobalStyles.colors.primary800,
+        },
         tabBarStyle: {
-          backgroundColor: GlobalStyles.colors.primary500,
+          backgroundColor: GlobalStyles.colors.surface,
+          borderTopColor: GlobalStyles.colors.primary100,
+          borderTopWidth: 1,
+          height: 64,
+          paddingBottom: 8,
+          paddingTop: 6,
         },
-        tabBarActiveTintColor: GlobalStyles.colors.accent500,
-        tabBarInactiveTintColor: GlobalStyles.colors.primary400,
+        tabBarActiveTintColor: GlobalStyles.colors.primary500,
+        tabBarInactiveTintColor: GlobalStyles.colors.gray500,
+        tabBarLabelStyle: {
+          fontWeight: "600",
+          fontSize: 12,
+        },
         headerRight: () => (
           <IconButton
-            icon="add"
-            size={24}
-            color={GlobalStyles.colors.accent500}
+            icon="add-circle"
+            size={28}
+            color={GlobalStyles.colors.primary800}
             onPress={() => navigation.navigate("ManageExpense")}
           />
         ),
@@ -64,15 +77,22 @@ function ExpensesOverview() {
 export default function App() {
   return (
     <>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <ExpensesContextProvider>
         <NavigationContainer>
           <Stack.Navigator
             screenOptions={{
               headerStyle: {
-                backgroundColor: GlobalStyles.colors.primary500,
+                backgroundColor: GlobalStyles.colors.header,
               },
-              headerTintColor: "white",
+              headerTintColor: GlobalStyles.colors.primary800,
+              headerTitleStyle: {
+                fontWeight: "800",
+                color: GlobalStyles.colors.primary800,
+              },
+              contentStyle: {
+                backgroundColor: GlobalStyles.colors.background,
+              },
             }}
           >
             <Stack.Screen

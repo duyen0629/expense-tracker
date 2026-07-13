@@ -104,8 +104,8 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
             mode="date"
             display={Platform.OS === "ios" ? "inline" : "default"}
             onChange={dateChangeHandler}
-            themeVariant="dark"
-            accentColor={GlobalStyles.colors.accent500}
+            themeVariant="light"
+            accentColor={GlobalStyles.colors.primary500}
           />
           {Platform.OS === "ios" && (
             <Button style={styles.dateDoneButton} onPress={() => setShowDatePicker(false)}>
@@ -164,14 +164,14 @@ export default ExpenseForm;
 
 const styles = StyleSheet.create({
   form: {
-    marginTop: 40,
+    marginTop: 24,
     marginBottom: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
-    marginBottom: 16,
+    fontSize: 26,
+    fontWeight: "800",
+    color: GlobalStyles.colors.surface,
+    marginBottom: 18,
     textAlign: "center",
   },
   inputsRow: {
@@ -187,27 +187,34 @@ const styles = StyleSheet.create({
   },
   dateLabel: {
     fontSize: 12,
-    color: GlobalStyles.colors.primary100,
-    marginBottom: 4,
+    fontWeight: "700",
+    color: GlobalStyles.colors.surface,
+    marginBottom: 6,
   },
   dateButton: {
-    backgroundColor: GlobalStyles.colors.primary100,
-    padding: 6,
-    borderRadius: 6,
-    minHeight: 36,
+    backgroundColor: GlobalStyles.colors.surface,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 14,
+    minHeight: 44,
     justifyContent: "center",
+    borderWidth: 1,
+    borderColor: GlobalStyles.colors.primary100,
   },
   dateButtonText: {
-    fontSize: 18,
-    color: GlobalStyles.colors.primary700,
+    fontSize: 16,
+    color: GlobalStyles.colors.primary800,
+    fontWeight: "600",
   },
   datePickerContainer: {
     marginHorizontal: 4,
     marginBottom: 8,
-    backgroundColor: GlobalStyles.colors.primary100,
-    borderRadius: 6,
+    backgroundColor: GlobalStyles.colors.surface,
+    borderRadius: 18,
     overflow: "hidden",
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: GlobalStyles.colors.primary100,
   },
   dateDoneButton: {
     marginVertical: 8,
@@ -218,6 +225,7 @@ const styles = StyleSheet.create({
   },
   invalidInput: {
     backgroundColor: GlobalStyles.colors.error50,
+    borderColor: GlobalStyles.colors.error500,
   },
   categoryContainer: {
     marginHorizontal: 4,
@@ -225,7 +233,8 @@ const styles = StyleSheet.create({
   },
   categoryLabel: {
     fontSize: 12,
-    color: GlobalStyles.colors.primary100,
+    fontWeight: "700",
+    color: GlobalStyles.colors.surface,
     marginBottom: 8,
   },
   categoryRow: {
@@ -235,30 +244,35 @@ const styles = StyleSheet.create({
   },
   categoryChip: {
     paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 6,
-    backgroundColor: GlobalStyles.colors.primary100,
+    paddingHorizontal: 14,
+    borderRadius: 999,
+    backgroundColor: GlobalStyles.colors.surface,
+    borderWidth: 1,
+    borderColor: GlobalStyles.colors.primary100,
   },
   categoryChipSelected: {
-    backgroundColor: GlobalStyles.colors.accent500,
+    backgroundColor: GlobalStyles.colors.accentSoft,
+    borderColor: GlobalStyles.colors.accent500,
   },
   categoryChipText: {
     color: GlobalStyles.colors.primary700,
     fontSize: 13,
-    fontWeight: "600",
+    fontWeight: "700",
   },
   categoryChipTextSelected: {
-    color: GlobalStyles.colors.primary800,
+    color: GlobalStyles.colors.accent500,
   },
   errorText: {
     textAlign: "center",
     color: GlobalStyles.colors.error500,
     margin: 8,
+    fontWeight: "600",
   },
   buttons: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 8,
   },
   button: {
     minWidth: 120,

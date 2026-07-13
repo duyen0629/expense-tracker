@@ -20,21 +20,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 24,
-    backgroundColor: GlobalStyles.colors.primary700,
+    backgroundColor: GlobalStyles.colors.background,
   },
   text: {
-    color: "white",
+    color: GlobalStyles.colors.surface,
     textAlign: "center",
     marginBottom: 8,
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: "800",
   },
   message: {
     fontSize: 14,
     textAlign: "center",
-    marginBottom: 8,
-    color: "white",
+    marginBottom: 16,
+    color: GlobalStyles.colors.primary50,
   },
 });

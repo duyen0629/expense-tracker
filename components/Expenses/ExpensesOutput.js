@@ -67,15 +67,15 @@ export default ExpensesOutput;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 24,
-    paddingTop: 24,
+    paddingHorizontal: 20,
+    paddingTop: 20,
     paddingBottom: 0,
-    backgroundColor: GlobalStyles.colors.primary700,
+    backgroundColor: GlobalStyles.colors.background,
     flex: 1,
   },
   filterScroll: {
     flexGrow: 0,
-    marginTop: 12,
+    marginTop: 14,
     marginBottom: 8,
   },
   filterRow: {
@@ -83,26 +83,30 @@ const styles = StyleSheet.create({
     paddingRight: 8,
   },
   filterChip: {
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 6,
-    backgroundColor: GlobalStyles.colors.primary500,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 999,
+    backgroundColor: GlobalStyles.colors.surface,
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.55)",
   },
   filterChipSelected: {
-    backgroundColor: GlobalStyles.colors.accent500,
+    backgroundColor: GlobalStyles.colors.primary500,
+    borderColor: GlobalStyles.colors.primary500,
   },
   filterChipText: {
-    color: GlobalStyles.colors.primary50,
+    color: GlobalStyles.colors.primary700,
     fontSize: 13,
-    fontWeight: "600",
+    fontWeight: "700",
   },
   filterChipTextSelected: {
-    color: GlobalStyles.colors.primary800,
+    color: GlobalStyles.colors.surface,
   },
   infoText: {
-    color: "white",
+    color: GlobalStyles.colors.primary800,
     fontSize: 16,
     textAlign: "center",
-    marginTop: 32,
+    marginTop: 40,
+    fontWeight: "600",
   },
 });

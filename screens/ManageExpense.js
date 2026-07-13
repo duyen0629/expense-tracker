@@ -88,16 +88,16 @@ export default ManageExpense;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: GlobalStyles.colors.primary800,
+    backgroundColor: GlobalStyles.colors.background,
   },
   contentContainer: {
     padding: 24,
   },
   deleteIconContainer: {
     marginTop: 16,
-    paddingTop: 8,
-    borderTopWidth: 2,
-    borderTopColor: GlobalStyles.colors.primary200,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: GlobalStyles.colors.primary100,
     alignItems: "center",
   },
 });

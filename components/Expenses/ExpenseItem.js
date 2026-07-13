@@ -19,11 +19,11 @@ function ExpenseItem({ id, description, amount, date, category }) {
     >
       <View style={styles.expenseItem}>
         <View style={styles.details}>
-          <Text style={[styles.textBase, styles.description]}>
-            {description}
-          </Text>
-          <Text style={styles.textBase}>{getFormattedDate(date)}</Text>
-          <Text style={styles.category}>{getCategoryLabel(category)}</Text>
+          <Text style={[styles.textBase, styles.description]}>{description}</Text>
+          <Text style={styles.dateText}>{getFormattedDate(date)}</Text>
+          <View style={styles.categoryBadge}>
+            <Text style={styles.category}>{getCategoryLabel(category)}</Text>
+          </View>
         </View>
         <View style={styles.amountContainer}>
           <Text style={styles.amount}>${amount.toFixed(2)}</Text>
@@ -37,50 +37,67 @@ export default ExpenseItem;
 
 const styles = StyleSheet.create({
   pressed: {
-    opacity: 0.75,
+    opacity: 0.85,
+    transform: [{ scale: 0.98 }],
   },
   expenseItem: {
-    padding: 12,
+    padding: 14,
     marginVertical: 8,
-    backgroundColor: GlobalStyles.colors.primary500,
-    borderRadius: 6,
+    backgroundColor: GlobalStyles.colors.surface,
+    borderRadius: 16,
     flexDirection: "row",
     justifyContent: "space-between",
-    elevation: 3,
-    shadowColor: GlobalStyles.colors.gray500,
-    shadowRadius: 4,
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.4,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: GlobalStyles.colors.primary100,
+    elevation: 2,
+    shadowColor: GlobalStyles.colors.primary500,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.12,
   },
   details: {
     flex: 1,
     marginRight: 12,
   },
   textBase: {
-    color: GlobalStyles.colors.primary50,
+    color: GlobalStyles.colors.gray700,
   },
   description: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: "700",
     marginBottom: 4,
+    color: GlobalStyles.colors.primary800,
+  },
+  dateText: {
+    color: GlobalStyles.colors.gray500,
+    fontSize: 13,
+  },
+  categoryBadge: {
+    alignSelf: "flex-start",
+    marginTop: 8,
+    backgroundColor: GlobalStyles.colors.accentSoft,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
   },
   category: {
-    marginTop: 4,
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: "700",
     color: GlobalStyles.colors.accent500,
   },
   amountContainer: {
-    fontSize: 16,
-    paddingVertical: 4,
-    backgroundColor: "white",
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    backgroundColor: GlobalStyles.colors.primary50,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 4,
-    minWidth: 80,
+    borderRadius: 14,
+    minWidth: 84,
   },
   amount: {
     color: GlobalStyles.colors.primary500,
-    fontWeight: "bold",
+    fontWeight: "800",
+    fontSize: 15,
   },
 });
