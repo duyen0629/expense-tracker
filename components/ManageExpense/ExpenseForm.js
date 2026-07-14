@@ -28,6 +28,13 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
     });
   }
 
+  function amountChangeHandler(enteredValue) {
+    const sanitized = enteredValue.replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");
+    setInputs((curInputs) => {
+      return { ...curInputs, amount: { value: sanitized, isValid: true } };
+    });
+  }
+
   function dateChangeHandler(event, selectedDate) {
     if (Platform.OS === "android") {
       setShowDatePicker(false);
@@ -83,7 +90,7 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
           invalid={!inputs.amount.isValid}
           textInputConfig={{
             keyboardType: "decimal-pad",
-            onChangeText: inputChangeHandler.bind(this, "amount"),
+            onChangeText: amountChangeHandler,
             value: inputs.amount.value,
           }}
         />
