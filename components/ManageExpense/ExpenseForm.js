@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Pressable, Platform, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Input from "./Input";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Button from "../UI/Button";
 import { getFormattedDate, parseFormattedDate } from "../../util/date";
@@ -10,6 +10,7 @@ import { CATEGORIES, DEFAULT_CATEGORY } from "../../constants/categories";
 
 function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const categoryScrollRef = useRef(null);
   const [inputs, setInputs] = useState({
     amount: { value: defaultValues ? defaultValues.amount.toString() : "", isValid: true },
     date: {
@@ -27,6 +28,11 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
     setInputs((curInputs) => {
       return { ...curInputs, [inputIdentifier]: { value: enteredValue, isValid: true } };
     });
+  }
+
+  function categoryChangeHandler(categoryId) {
+    inputChangeHandler("category", categoryId);
+    categoryScrollRef.current?.scrollTo({ x: 0, animated: true });
   }
 
   function amountChangeHandler(enteredValue) {
@@ -155,28 +161,35 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
           </Text>
         </View>
         <ScrollView
+          ref={categoryScrollRef}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.categoryRow}
         >
-          {CATEGORIES.map((category) => {
-            const isSelected = inputs.category.value === category.id;
-            const chipColor = isSelected
-              ? GlobalStyles.colors.accent500
-              : GlobalStyles.colors.primary700;
-            return (
-              <Pressable
-                key={category.id}
-                onPress={() => inputChangeHandler("category", category.id)}
-                style={[styles.categoryChip, isSelected && styles.categoryChipSelected]}
-              >
-                <Ionicons name={category.icon} size={16} color={chipColor} />
-                <Text style={[styles.categoryChipText, isSelected && styles.categoryChipTextSelected]}>
-                  {category.label}
-                </Text>
-              </Pressable>
-            );
-          })}
+          {[...CATEGORIES]
+            .sort((a, b) => {
+              if (a.id === inputs.category.value) return -1;
+              if (b.id === inputs.category.value) return 1;
+              return 0;
+            })
+            .map((category) => {
+              const isSelected = inputs.category.value === category.id;
+              const chipColor = isSelected
+                ? GlobalStyles.colors.surface
+                : GlobalStyles.colors.primary700;
+              return (
+                <Pressable
+                  key={category.id}
+                  onPress={() => categoryChangeHandler(category.id)}
+                  style={[styles.categoryChip, isSelected && styles.categoryChipSelected]}
+                >
+                  <Ionicons name={category.icon} size={16} color={chipColor} />
+                  <Text style={[styles.categoryChipText, isSelected && styles.categoryChipTextSelected]}>
+                    {category.label}
+                  </Text>
+                </Pressable>
+              );
+            })}
         </ScrollView>
       </View>
       {formIsInvalid && (
@@ -301,8 +314,9 @@ const styles = StyleSheet.create({
     borderColor: GlobalStyles.colors.primary100,
   },
   categoryChipSelected: {
-    backgroundColor: GlobalStyles.colors.accentSoft,
-    borderColor: GlobalStyles.colors.accent500,
+    backgroundColor: GlobalStyles.colors.primary500,
+    borderColor: GlobalStyles.colors.surface,
+    borderWidth: 2,
   },
   categoryChipText: {
     color: GlobalStyles.colors.primary700,
@@ -310,7 +324,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   categoryChipTextSelected: {
-    color: GlobalStyles.colors.accent500,
+    color: GlobalStyles.colors.surface,
   },
   errorText: {
     textAlign: "center",
@@ -322,7 +336,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 8,
+    marginTop: 24,
   },
   button: {
     minWidth: 120,
