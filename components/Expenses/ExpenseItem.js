@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles } from "../../constants/styles";
 import { getFormattedDate } from "../../util/date";
-import { getCategoryLabel } from "../../constants/categories";
+import { getCategoryLabel, getCategoryIcon } from "../../constants/categories";
 import { useNavigation } from "@react-navigation/native";
 
 function ExpenseItem({ id, description, amount, date, category }) {
@@ -22,6 +23,11 @@ function ExpenseItem({ id, description, amount, date, category }) {
           <Text style={[styles.textBase, styles.description]}>{description}</Text>
           <Text style={styles.dateText}>{getFormattedDate(date)}</Text>
           <View style={styles.categoryBadge}>
+            <Ionicons
+              name={getCategoryIcon(category)}
+              size={12}
+              color={GlobalStyles.colors.accent500}
+            />
             <Text style={styles.category}>{getCategoryLabel(category)}</Text>
           </View>
         </View>
@@ -75,6 +81,9 @@ const styles = StyleSheet.create({
   },
   categoryBadge: {
     alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
     marginTop: 8,
     backgroundColor: GlobalStyles.colors.accentSoft,
     paddingHorizontal: 10,

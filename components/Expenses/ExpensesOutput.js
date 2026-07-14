@@ -1,5 +1,6 @@
 import { View, StyleSheet, Text, Pressable, ScrollView } from "react-native";
 import { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles } from "../../constants/styles";
 import { CATEGORIES } from "../../constants/categories";
 import ExpensesSummary from "./ExpensesSummary";
@@ -34,6 +35,15 @@ function ExpensesOutput({ expenses, periodName, fallbackText }) {
           onPress={() => setSelectedCategory("all")}
           style={[styles.filterChip, selectedCategory === "all" && styles.filterChipSelected]}
         >
+          <Ionicons
+            name="apps"
+            size={14}
+            color={
+              selectedCategory === "all"
+                ? GlobalStyles.colors.surface
+                : GlobalStyles.colors.primary700
+            }
+          />
           <Text
             style={[
               styles.filterChipText,
@@ -51,6 +61,11 @@ function ExpensesOutput({ expenses, periodName, fallbackText }) {
               onPress={() => setSelectedCategory(category.id)}
               style={[styles.filterChip, isSelected && styles.filterChipSelected]}
             >
+              <Ionicons
+                name={category.icon}
+                size={14}
+                color={isSelected ? GlobalStyles.colors.surface : GlobalStyles.colors.primary700}
+              />
               <Text style={[styles.filterChipText, isSelected && styles.filterChipTextSelected]}>
                 {category.label}
               </Text>
@@ -81,8 +96,12 @@ const styles = StyleSheet.create({
   filterRow: {
     gap: 8,
     paddingRight: 8,
+    alignItems: "center",
   },
   filterChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
     paddingVertical: 8,
     paddingHorizontal: 14,
     borderRadius: 999,

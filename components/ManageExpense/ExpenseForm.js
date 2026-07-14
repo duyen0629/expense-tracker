@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, Pressable, Platform } from "react-native";
+import { View, Text, StyleSheet, Pressable, Platform, ScrollView } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import Input from "./Input";
 import { useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -82,7 +83,10 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
 
   return (
     <View style={styles.form}>
-      <Text style={styles.title}>Your Expense</Text>
+      <View style={styles.titleRow}>
+        <Ionicons name="wallet" size={28} color={GlobalStyles.colors.surface} />
+        <Text style={styles.title}>Your Expense</Text>
+      </View>
       <View style={styles.inputsRow}>
         <Input
           style={styles.rowInput}
@@ -95,11 +99,19 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
           }}
         />
         <View style={[styles.rowInput, styles.dateField]}>
-          <Text style={[styles.dateLabel, !inputs.date.isValid && styles.invalidLabel]}>Date</Text>
+          <View style={styles.labelRow}>
+            <Ionicons
+              name="calendar"
+              size={14}
+              color={!inputs.date.isValid ? GlobalStyles.colors.error500 : GlobalStyles.colors.surface}
+            />
+            <Text style={[styles.dateLabel, !inputs.date.isValid && styles.invalidLabel]}>Date</Text>
+          </View>
           <Pressable
             onPress={() => setShowDatePicker((current) => !current)}
             style={[styles.dateButton, !inputs.date.isValid && styles.invalidInput]}
           >
+            <Ionicons name="calendar-outline" size={18} color={GlobalStyles.colors.primary700} />
             <Text style={styles.dateButtonText}>{inputs.date.value}</Text>
           </Pressable>
         </View>
@@ -132,25 +144,40 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
         }}
       />
       <View style={styles.categoryContainer}>
-        <Text style={[styles.categoryLabel, !inputs.category.isValid && styles.invalidLabel]}>
-          Category
-        </Text>
-        <View style={styles.categoryRow}>
+        <View style={styles.labelRow}>
+          <Ionicons
+            name="pricetag"
+            size={14}
+            color={!inputs.category.isValid ? GlobalStyles.colors.error500 : GlobalStyles.colors.surface}
+          />
+          <Text style={[styles.categoryLabel, !inputs.category.isValid && styles.invalidLabel]}>
+            Category
+          </Text>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.categoryRow}
+        >
           {CATEGORIES.map((category) => {
             const isSelected = inputs.category.value === category.id;
+            const chipColor = isSelected
+              ? GlobalStyles.colors.accent500
+              : GlobalStyles.colors.primary700;
             return (
               <Pressable
                 key={category.id}
                 onPress={() => inputChangeHandler("category", category.id)}
                 style={[styles.categoryChip, isSelected && styles.categoryChipSelected]}
               >
+                <Ionicons name={category.icon} size={16} color={chipColor} />
                 <Text style={[styles.categoryChipText, isSelected && styles.categoryChipTextSelected]}>
                   {category.label}
                 </Text>
               </Pressable>
             );
           })}
-        </View>
+        </ScrollView>
       </View>
       {formIsInvalid && (
         <Text style={styles.errorText}>Invalid input values - please check your entered values</Text>
@@ -174,12 +201,24 @@ const styles = StyleSheet.create({
     marginTop: 24,
     marginBottom: 20,
   },
+  titleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    marginBottom: 18,
+  },
   title: {
     fontSize: 26,
     fontWeight: "800",
     color: GlobalStyles.colors.surface,
-    marginBottom: 18,
     textAlign: "center",
+  },
+  labelRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    marginBottom: 6,
   },
   inputsRow: {
     flexDirection: "row",
@@ -196,7 +235,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "700",
     color: GlobalStyles.colors.surface,
-    marginBottom: 6,
   },
   dateButton: {
     backgroundColor: GlobalStyles.colors.surface,
@@ -204,7 +242,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 14,
     minHeight: 44,
-    justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
     borderWidth: 1,
     borderColor: GlobalStyles.colors.primary100,
   },
@@ -242,14 +282,17 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "700",
     color: GlobalStyles.colors.surface,
-    marginBottom: 8,
   },
   categoryRow: {
     flexDirection: "row",
-    flexWrap: "wrap",
+    alignItems: "center",
     gap: 8,
+    paddingRight: 8,
   },
   categoryChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
     paddingVertical: 8,
     paddingHorizontal: 14,
     borderRadius: 999,
