@@ -1,4 +1,13 @@
-import { View, Text, StyleSheet, Pressable, Platform, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Platform,
+  ScrollView,
+  LayoutAnimation,
+  UIManager,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Input from "./Input";
 import { useRef, useState } from "react";
@@ -7,6 +16,10 @@ import Button from "../UI/Button";
 import { getFormattedDate, parseFormattedDate } from "../../util/date";
 import { GlobalStyles } from "../../constants/styles";
 import { CATEGORIES, DEFAULT_CATEGORY } from "../../constants/categories";
+
+if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -31,6 +44,21 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
   }
 
   function categoryChangeHandler(categoryId) {
+    if (categoryId === inputs.category.value) {
+      return;
+    }
+
+    LayoutAnimation.configureNext({
+      duration: 350,
+      update: {
+        type: LayoutAnimation.Types.easeInEaseOut,
+      },
+      create: {
+        type: LayoutAnimation.Types.easeInEaseOut,
+        property: LayoutAnimation.Properties.opacity,
+      },
+    });
+
     inputChangeHandler("category", categoryId);
     categoryScrollRef.current?.scrollTo({ x: 0, animated: true });
   }
