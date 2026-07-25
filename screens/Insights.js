@@ -8,6 +8,7 @@ import {
   filterExpensesByPeriod,
   getPeriodLabel,
 } from "../util/periods";
+import { getCategoryTotals } from "../util/insights";
 
 function Insights() {
   const expensesContext = useContext(ExpensesContext);
@@ -17,7 +18,7 @@ function Insights() {
     expensesContext.expenses,
     selectedPeriod
   );
-  const periodTotal = periodExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+  const { total: periodTotal, count: periodCount } = getCategoryTotals(periodExpenses);
 
   return (
     <View style={styles.container}>
@@ -26,7 +27,7 @@ function Insights() {
         <Text style={styles.summaryLabel}>{getPeriodLabel(selectedPeriod)}</Text>
         <Text style={styles.summaryAmount}>${periodTotal.toFixed(2)}</Text>
         <Text style={styles.summaryCount}>
-          {periodExpenses.length} expense{periodExpenses.length === 1 ? "" : "s"}
+          {periodCount} expense{periodCount === 1 ? "" : "s"}
         </Text>
       </View>
     </View>

@@ -16,16 +16,21 @@ Category spending overview for a selected time period.
      - `screens/Insights.js`
      - `App.js` (Insights tab)
 
-### To implement later
-
 2. **Category totals calculation**
-   - Pure helper: from expenses + period → `{ categoryId, total, count }` (+ overall total)
+   - Pure helper `getCategoryTotals(expenses)` → `{ categories: [{ categoryId, total, count }], total, count }`
+   - Categories sorted by total (highest first); missing category falls back to default
+   - Insights summary uses this helper for period total + count
+   - Files:
+     - `util/insights.js`
+     - `screens/Insights.js` (wired)
+
+### To implement later
 
 3. **Insights screen shell**
    - Loading / empty states around the period selector (beyond the current summary card)
 
 4. **Category breakdown list**
-   - Per-category icon, label, amount, and % of total
+   - Per-category icon, label, amount, and % of total (uses `categories` from `getCategoryTotals`)
 
 5. **Bar chart**
    - Simple bars (or chart lib later) sized by share of total
@@ -38,5 +43,5 @@ Category spending overview for a selected time period.
 
 ### Suggested build order
 
-`2 → 3 → 4 → 5 → 6 → 7`  
-(Period selector / slice 1 is done.)
+`3 → 4 → 5 → 6 → 7`  
+(Slices 1–2 are done.)
