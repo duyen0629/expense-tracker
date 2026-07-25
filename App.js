@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AllExpenses from "./screens/AllExpenses";
 import RecentExpenses from "./screens/RecentExpenses";
 import ManageExpense from "./screens/ManageExpense";
+import Insights from "./screens/Insights";
 import { GlobalStyles } from "./constants/styles";
 import { Ionicons } from "@expo/vector-icons";
 import IconButton from "./components/UI/IconButton";
@@ -68,6 +69,17 @@ function ExpensesOverview() {
           tabBarLabel: "All",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="calendar" color={color} size={size} />
+          ),
+        }}
+      />
+      <BottomTabs.Screen
+        name="Insights"
+        component={Insights}
+        options={{
+          title: "Insights",
+          tabBarLabel: "Insights",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="pie-chart" color={color} size={size} />
           ),
         }}
       />
