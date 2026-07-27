@@ -24,10 +24,19 @@ Category spending overview for a selected time period.
      - `util/insights.js`
      - `screens/Insights.js` (wired)
 
-### To implement later
-
 3. **Insights screen shell**
-   - Loading / empty states around the period selector (beyond the current summary card)
+   - Shared expense load in `ExpensesContextProvider` (`isLoading`, `error`)
+   - `InsightsShell`: scroll layout, heading, period selector, summary card, body slot
+   - Loading spinner below summary (period chips stay usable)
+   - Empty message when the selected period has no expenses
+   - Fetch error uses `ErrorOverlay` (same as Recent)
+   - Files:
+     - `components/Insights/InsightsShell.js`
+     - `screens/Insights.js`
+     - `store/expenses-context.js`
+     - `screens/RecentExpenses.js` (uses shared load)
+
+### To implement later
 
 4. **Category breakdown list**
    - Per-category icon, label, amount, and % of total (uses `categories` from `getCategoryTotals`)
@@ -43,5 +52,5 @@ Category spending overview for a selected time period.
 
 ### Suggested build order
 
-`3 → 4 → 5 → 6 → 7`  
-(Slices 1–2 are done.)
+`4 → 5 → 6 → 7`  
+(Slices 1–3 are done.)

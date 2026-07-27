@@ -1,12 +1,15 @@
-import { createContext } from "react";
-import { useReducer } from "react";
+import { createContext, useEffect, useReducer, useState } from "react";
+import { fetchExpenses } from "../util/http";
 
 export const ExpensesContext = createContext({
   expenses: [],
+  isLoading: true,
+  error: null,
   setExpenses: (expenses) => {},
   addExpense: ({ description, amount, date, category }) => {},
   deleteExpense: (id) => {},
   updateExpense: (id, { description, amount, date, category }) => {},
+  clearError: () => {},
 });
 
 function expensesReducer(state, action) {
@@ -35,6 +38,23 @@ function expensesReducer(state, action) {
 
 function ExpensesContextProvider({ children }) {
   const [expensesState, dispatch] = useReducer(expensesReducer, []);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function loadExpenses() {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const expenses = await fetchExpenses();
+        dispatch({ type: "SET", payload: expenses });
+      } catch {
+        setError("Failed to fetch expenses");
+      }
+      setIsLoading(false);
+    }
+    loadExpenses();
+  }, []);
 
   const setExpenses = (expenses) => {
     dispatch({ type: "SET", payload: expenses });
@@ -49,12 +69,19 @@ function ExpensesContextProvider({ children }) {
     dispatch({ type: "UPDATE", payload: { id, expense: expenseData } });
   };
 
+  const clearError = () => {
+    setError(null);
+  };
+
   const value = {
     expenses: expensesState,
+    isLoading,
+    error,
     setExpenses,
     addExpense,
     deleteExpense,
     updateExpense,
+    clearError,
   };
   return <ExpensesContext.Provider value={value}>{children}</ExpensesContext.Provider>;
 }
