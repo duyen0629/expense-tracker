@@ -1,8 +1,9 @@
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import { useContext, useState } from "react";
 import { ExpensesContext } from "../store/expenses-context";
 import { GlobalStyles } from "../constants/styles";
 import InsightsShell from "../components/Insights/InsightsShell";
+import CategoryBarChart from "../components/Insights/CategoryBarChart";
 import CategoryBreakdownList from "../components/Insights/CategoryBreakdownList";
 import ErrorOverlay from "../components/UI/ErrorOverlay";
 import {
@@ -39,7 +40,12 @@ function Insights() {
       </Text>
     );
   } else if (!expensesContext.isLoading && periodCount > 0) {
-    bodyContent = <CategoryBreakdownList categories={categories} total={periodTotal} />;
+    bodyContent = (
+      <View>
+        <CategoryBarChart categories={categories} total={periodTotal} />
+        <CategoryBreakdownList categories={categories} total={periodTotal} />
+      </View>
+    );
   }
 
   return (

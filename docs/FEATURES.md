@@ -44,10 +44,15 @@ Category spending overview for a selected time period.
      - `components/Insights/CategoryBreakdownList.js`
      - `screens/Insights.js` (wired)
 
-### To implement later
-
 5. **Bar chart**
-   - Simple bars (or chart lib later) sized by share of total
+   - Horizontal bars sized relative to the top category (share of spending)
+   - Label + % of period total per row; plain `View` bars (no chart library)
+   - Shown above the category breakdown list
+   - Files:
+     - `components/Insights/CategoryBarChart.js`
+     - `screens/Insights.js` (wired)
+
+### To implement later
 
 6. **Tap-through filter**
    - Tap a category on Insights → open All/Recent with that category selected
@@ -57,5 +62,5 @@ Category spending overview for a selected time period.
 
 ### Suggested build order
 
-`5 → 6 → 7`  
-(Slices 1–4 are done.)
+`6 → 7`  
+(Slices 1–5 are done.)
