@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { ExpensesContext } from "../store/expenses-context";
 import { GlobalStyles } from "../constants/styles";
 import InsightsShell from "../components/Insights/InsightsShell";
+import CategoryBreakdownList from "../components/Insights/CategoryBreakdownList";
 import ErrorOverlay from "../components/UI/ErrorOverlay";
 import {
   DEFAULT_PERIOD,
@@ -25,7 +26,8 @@ function Insights() {
     expensesContext.expenses,
     selectedPeriod
   );
-  const { total: periodTotal, count: periodCount } = getCategoryTotals(periodExpenses);
+  const { total: periodTotal, count: periodCount, categories } =
+    getCategoryTotals(periodExpenses);
 
   let bodyContent = null;
 
@@ -36,6 +38,8 @@ function Insights() {
         an expense.
       </Text>
     );
+  } else if (!expensesContext.isLoading && periodCount > 0) {
+    bodyContent = <CategoryBreakdownList categories={categories} total={periodTotal} />;
   }
 
   return (

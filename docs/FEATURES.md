@@ -36,10 +36,15 @@ Category spending overview for a selected time period.
      - `store/expenses-context.js`
      - `screens/RecentExpenses.js` (uses shared load)
 
-### To implement later
-
 4. **Category breakdown list**
-   - Per-category icon, label, amount, and % of total (uses `categories` from `getCategoryTotals`)
+   - “By category” section under the summary
+   - Each row: icon, label, expense count, % of period total, amount
+   - Sorted by spend (from `getCategoryTotals`)
+   - Files:
+     - `components/Insights/CategoryBreakdownList.js`
+     - `screens/Insights.js` (wired)
+
+### To implement later
 
 5. **Bar chart**
    - Simple bars (or chart lib later) sized by share of total
@@ -52,5 +57,5 @@ Category spending overview for a selected time period.
 
 ### Suggested build order
 
-`4 → 5 → 6 → 7`  
-(Slices 1–3 are done.)
+`5 → 6 → 7`  
+(Slices 1–4 are done.)
