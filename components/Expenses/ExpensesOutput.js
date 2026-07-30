@@ -1,13 +1,23 @@
 import { View, StyleSheet, Text, Pressable, ScrollView } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles } from "../../constants/styles";
 import { CATEGORIES } from "../../constants/categories";
 import ExpensesSummary from "./ExpensesSummary";
 import ExpensesList from "./ExpensesList";
 
-function ExpensesOutput({ expenses, periodName, fallbackText }) {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+function ExpensesOutput({
+  expenses,
+  periodName,
+  fallbackText,
+  initialCategory = "all",
+  categoryRequestId = 0,
+}) {
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+
+  useEffect(() => {
+    setSelectedCategory(initialCategory || "all");
+  }, [initialCategory, categoryRequestId]);
 
   const filteredExpenses =
     selectedCategory === "all"

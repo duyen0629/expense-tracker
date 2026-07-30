@@ -52,15 +52,23 @@ Category spending overview for a selected time period.
      - `components/Insights/CategoryBarChart.js`
      - `screens/Insights.js` (wired)
 
-### To implement later
-
 6. **Tap-through filter**
-   - Tap a category on Insights → open All/Recent with that category selected
+   - Tap a category bar or breakdown row on Insights → opens **All** tab
+   - All Expenses applies that category chip via `route.params.category`
+   - `ExpensesOutput` accepts `initialCategory` and syncs when params change
+   - Files:
+     - `screens/Insights.js`
+     - `screens/AllExpenses.js`
+     - `components/Expenses/ExpensesOutput.js`
+     - `components/Insights/CategoryBreakdownList.js`
+     - `components/Insights/CategoryBarChart.js`
+
+### To implement later
 
 7. **Polish**
    - Theme-aligned colors, empty/error/loading polish, short “Spending by category” header
 
 ### Suggested build order
 
-`6 → 7`  
-(Slices 1–5 are done.)
+`7`  
+(Slices 1–6 are done.)

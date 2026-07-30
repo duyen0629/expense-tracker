@@ -1,11 +1,14 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles } from "../../constants/styles";
 import { getCategoryIcon, getCategoryLabel } from "../../constants/categories";
 
-function CategoryBreakdownItem({ categoryId, total, count, percentOfTotal }) {
+function CategoryBreakdownItem({ categoryId, total, count, percentOfTotal, onPress }) {
   return (
-    <View style={styles.row}>
+    <Pressable
+      onPress={() => onPress?.(categoryId)}
+      style={({ pressed }) => [styles.row, pressed && styles.pressed]}
+    >
       <View style={styles.iconWrap}>
         <Ionicons name={getCategoryIcon(categoryId)} size={20} color={GlobalStyles.colors.primary500} />
       </View>
@@ -16,11 +19,12 @@ function CategoryBreakdownItem({ categoryId, total, count, percentOfTotal }) {
         </Text>
       </View>
       <Text style={styles.amount}>${total.toFixed(2)}</Text>
-    </View>
+      <Ionicons name="chevron-forward" size={18} color={GlobalStyles.colors.gray500} />
+    </Pressable>
   );
 }
 
-function CategoryBreakdownList({ categories, total }) {
+function CategoryBreakdownList({ categories, total, onCategoryPress }) {
   if (categories.length === 0) {
     return null;
   }
@@ -40,6 +44,7 @@ function CategoryBreakdownList({ categories, total }) {
               total={item.total}
               count={item.count}
               percentOfTotal={percentOfTotal}
+              onPress={onCategoryPress}
             />
           );
         })}
@@ -77,6 +82,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     elevation: 2,
   },
+  pressed: {
+    opacity: 0.85,
+    transform: [{ scale: 0.98 }],
+  },
   iconWrap: {
     width: 40,
     height: 40,
@@ -105,5 +114,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "800",
     color: GlobalStyles.colors.primary500,
+    marginRight: 4,
   },
 });

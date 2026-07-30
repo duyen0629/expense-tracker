@@ -1,5 +1,6 @@
 import { Text, StyleSheet, View } from "react-native";
 import { useContext, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { ExpensesContext } from "../store/expenses-context";
 import { GlobalStyles } from "../constants/styles";
 import InsightsShell from "../components/Insights/InsightsShell";
@@ -14,6 +15,7 @@ import {
 import { getCategoryTotals } from "../util/insights";
 
 function Insights() {
+  const navigation = useNavigation();
   const expensesContext = useContext(ExpensesContext);
   const [selectedPeriod, setSelectedPeriod] = useState(DEFAULT_PERIOD);
 
@@ -30,6 +32,10 @@ function Insights() {
   const { total: periodTotal, count: periodCount, categories } =
     getCategoryTotals(periodExpenses);
 
+  function categoryPressHandler(categoryId) {
+    navigation.navigate("AllExpenses", { category: categoryId });
+  }
+
   let bodyContent = null;
 
   if (!expensesContext.isLoading && periodCount === 0) {
@@ -42,8 +48,16 @@ function Insights() {
   } else if (!expensesContext.isLoading && periodCount > 0) {
     bodyContent = (
       <View>
-        <CategoryBarChart categories={categories} total={periodTotal} />
-        <CategoryBreakdownList categories={categories} total={periodTotal} />
+        <CategoryBarChart
+          categories={categories}
+          total={periodTotal}
+          onCategoryPress={categoryPressHandler}
+        />
+        <CategoryBreakdownList
+          categories={categories}
+          total={periodTotal}
+          onCategoryPress={categoryPressHandler}
+        />
       </View>
     );
   }

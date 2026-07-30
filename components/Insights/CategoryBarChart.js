@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { GlobalStyles } from "../../constants/styles";
 import { getCategoryLabel } from "../../constants/categories";
 
-function CategoryBarChart({ categories, total }) {
+function CategoryBarChart({ categories, total, onCategoryPress }) {
   if (categories.length === 0 || total <= 0) {
     return null;
   }
@@ -18,7 +18,11 @@ function CategoryBarChart({ categories, total }) {
           const barWidthPercent = maxTotal > 0 ? (item.total / maxTotal) * 100 : 0;
 
           return (
-            <View key={item.categoryId} style={styles.barRow}>
+            <Pressable
+              key={item.categoryId}
+              onPress={() => onCategoryPress?.(item.categoryId)}
+              style={({ pressed }) => [styles.barRow, pressed && styles.pressed]}
+            >
               <View style={styles.labelRow}>
                 <Text style={styles.label} numberOfLines={1}>
                   {getCategoryLabel(item.categoryId)}
@@ -28,7 +32,7 @@ function CategoryBarChart({ categories, total }) {
               <View style={styles.track}>
                 <View style={[styles.fill, { width: `${barWidthPercent}%` }]} />
               </View>
-            </View>
+            </Pressable>
           );
         })}
       </View>
@@ -65,6 +69,9 @@ const styles = StyleSheet.create({
   },
   barRow: {
     gap: 6,
+  },
+  pressed: {
+    opacity: 0.75,
   },
   labelRow: {
     flexDirection: "row",
