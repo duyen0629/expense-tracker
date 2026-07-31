@@ -1,11 +1,11 @@
-import { Text, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { ExpensesContext } from "../store/expenses-context";
-import { GlobalStyles } from "../constants/styles";
 import InsightsShell from "../components/Insights/InsightsShell";
 import CategoryBarChart from "../components/Insights/CategoryBarChart";
 import CategoryBreakdownList from "../components/Insights/CategoryBreakdownList";
+import InsightsEmptyState from "../components/Insights/InsightsEmptyState";
 import ErrorOverlay from "../components/UI/ErrorOverlay";
 import {
   DEFAULT_PERIOD,
@@ -21,7 +21,10 @@ function Insights() {
 
   if (expensesContext.error) {
     return (
-      <ErrorOverlay message={expensesContext.error} onConfirm={expensesContext.clearError} />
+      <ErrorOverlay
+        message={expensesContext.error}
+        onConfirm={expensesContext.reloadExpenses}
+      />
     );
   }
 
@@ -39,12 +42,7 @@ function Insights() {
   let bodyContent = null;
 
   if (!expensesContext.isLoading && periodCount === 0) {
-    bodyContent = (
-      <Text style={styles.emptyText}>
-        No expenses in {getPeriodLabel(selectedPeriod).toLowerCase()}. Try another period or add
-        an expense.
-      </Text>
-    );
+    bodyContent = <InsightsEmptyState periodLabel={getPeriodLabel(selectedPeriod)} />;
   } else if (!expensesContext.isLoading && periodCount > 0) {
     bodyContent = (
       <View>
@@ -78,13 +76,4 @@ function Insights() {
 
 export default Insights;
 
-const styles = StyleSheet.create({
-  emptyText: {
-    color: GlobalStyles.colors.primary50,
-    fontSize: 16,
-    textAlign: "center",
-    fontWeight: "600",
-    lineHeight: 22,
-    paddingHorizontal: 8,
-  },
-});
+const styles = StyleSheet.create({});

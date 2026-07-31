@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles } from "../../constants/styles";
 import PeriodSelector from "./PeriodSelector";
 
@@ -17,11 +18,18 @@ function InsightsShell({
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
     >
-      <Text style={styles.heading}>Spending overview</Text>
+      <View style={styles.header}>
+        <Text style={styles.heading}>Spending by category</Text>
+        <Text style={styles.subtitle}>See where your money goes for the selected period.</Text>
+      </View>
+
       <PeriodSelector selectedPeriod={selectedPeriod} onSelectPeriod={onSelectPeriod} />
 
       <View style={styles.summaryCard}>
-        <Text style={styles.summaryLabel}>{periodLabel}</Text>
+        <View style={styles.summaryTop}>
+          <Ionicons name="wallet-outline" size={18} color={GlobalStyles.colors.primary400} />
+          <Text style={styles.summaryLabel}>{periodLabel}</Text>
+        </View>
         <Text style={styles.summaryAmount}>${periodTotal.toFixed(2)}</Text>
         <Text style={styles.summaryCount}>
           {periodCount} expense{periodCount === 1 ? "" : "s"}
@@ -29,9 +37,10 @@ function InsightsShell({
       </View>
 
       {isLoading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={GlobalStyles.colors.surface} />
-          <Text style={styles.loadingText}>Loading expenses…</Text>
+        <View style={styles.loadingCard}>
+          <ActivityIndicator size="large" color={GlobalStyles.colors.primary500} />
+          <Text style={styles.loadingTitle}>Loading insights</Text>
+          <Text style={styles.loadingText}>Fetching your expenses…</Text>
         </View>
       ) : (
         <View style={styles.body}>{children}</View>
@@ -53,15 +62,24 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
     flexGrow: 1,
   },
+  header: {
+    marginBottom: 16,
+    gap: 6,
+  },
   heading: {
-    fontSize: 15,
-    fontWeight: "700",
-    color: GlobalStyles.colors.primary50,
-    marginBottom: 4,
+    fontSize: 22,
+    fontWeight: "800",
+    color: GlobalStyles.colors.surface,
     letterSpacing: 0.2,
   },
+  subtitle: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: GlobalStyles.colors.primary50,
+    lineHeight: 20,
+  },
   summaryCard: {
-    marginTop: 16,
+    marginTop: 8,
     paddingVertical: 18,
     paddingHorizontal: 16,
     backgroundColor: GlobalStyles.colors.surface,
@@ -74,12 +92,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     elevation: 2,
   },
+  summaryTop: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    marginBottom: 6,
+  },
   summaryLabel: {
     fontSize: 13,
     fontWeight: "700",
     color: GlobalStyles.colors.primary400,
     letterSpacing: 0.3,
-    marginBottom: 6,
   },
   summaryAmount: {
     fontSize: 28,
@@ -92,14 +115,26 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: GlobalStyles.colors.gray500,
   },
-  loadingContainer: {
-    marginTop: 32,
+  loadingCard: {
+    marginTop: 20,
+    paddingVertical: 28,
+    paddingHorizontal: 20,
+    backgroundColor: GlobalStyles.colors.surface,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: GlobalStyles.colors.primary100,
     alignItems: "center",
-    gap: 12,
+    gap: 8,
+  },
+  loadingTitle: {
+    marginTop: 4,
+    fontSize: 16,
+    fontWeight: "800",
+    color: GlobalStyles.colors.primary800,
   },
   loadingText: {
-    color: GlobalStyles.colors.primary50,
-    fontSize: 15,
+    color: GlobalStyles.colors.gray500,
+    fontSize: 14,
     fontWeight: "600",
   },
   body: {

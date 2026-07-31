@@ -10,6 +10,7 @@ export const ExpensesContext = createContext({
   deleteExpense: (id) => {},
   updateExpense: (id, { description, amount, date, category }) => {},
   clearError: () => {},
+  reloadExpenses: () => {},
 });
 
 function expensesReducer(state, action) {
@@ -41,18 +42,19 @@ function ExpensesContextProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function loadExpenses() {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const expenses = await fetchExpenses();
-        dispatch({ type: "SET", payload: expenses });
-      } catch {
-        setError("Failed to fetch expenses");
-      }
-      setIsLoading(false);
+  async function loadExpenses() {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const expenses = await fetchExpenses();
+      dispatch({ type: "SET", payload: expenses });
+    } catch {
+      setError("Failed to fetch expenses");
     }
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
     loadExpenses();
   }, []);
 
@@ -73,6 +75,10 @@ function ExpensesContextProvider({ children }) {
     setError(null);
   };
 
+  const reloadExpenses = () => {
+    loadExpenses();
+  };
+
   const value = {
     expenses: expensesState,
     isLoading,
@@ -82,6 +88,7 @@ function ExpensesContextProvider({ children }) {
     deleteExpense,
     updateExpense,
     clearError,
+    reloadExpenses,
   };
   return <ExpensesContext.Provider value={value}>{children}</ExpensesContext.Provider>;
 }

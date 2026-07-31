@@ -15,7 +15,7 @@ function RecentExpenses() {
 
   if (expensesContext.error) {
     return (
-      <ErrorOverlay message={expensesContext.error} onConfirm={expensesContext.clearError} />
+      <ErrorOverlay message={expensesContext.error} onConfirm={expensesContext.reloadExpenses} />
     );
   }
 

@@ -63,12 +63,21 @@ Category spending overview for a selected time period.
      - `components/Insights/CategoryBreakdownList.js`
      - `components/Insights/CategoryBarChart.js`
 
+7. **Polish**
+   - Header: “Spending by category” + short supporting line
+   - Summary card icon; themed loading card under summary
+   - Empty state card (`InsightsEmptyState`) with icon + guidance
+   - Error overlay icon + **Try Again** calls `reloadExpenses`
+   - Loading overlay helper text
+   - Files:
+     - `components/Insights/InsightsShell.js`
+     - `components/Insights/InsightsEmptyState.js`
+     - `components/UI/ErrorOverlay.js`
+     - `components/UI/LoadingOverlay.js`
+     - `store/expenses-context.js`
+     - `screens/Insights.js`
+     - `screens/RecentExpenses.js`
+
 ### To implement later
 
-7. **Polish**
-   - Theme-aligned colors, empty/error/loading polish, short “Spending by category” header
-
-### Suggested build order
-
-`7`  
-(Slices 1–6 are done.)
+_None for Spending Insights — all planned slices are done._
