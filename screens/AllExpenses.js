@@ -30,6 +30,7 @@ function AllExpenses({ route, navigation }) {
       fallbackText="No registered expenses found."
       initialCategory={categoryFilter.category}
       categoryRequestId={categoryFilter.requestId}
+      enableSearch
     />
   );
 }

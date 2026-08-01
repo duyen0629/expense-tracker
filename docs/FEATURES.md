@@ -81,3 +81,20 @@ Category spending overview for a selected time period.
 ### To implement later
 
 _None for Spending Insights — all planned slices are done._
+
+## Expense search
+
+Search expenses by description on the **All** tab.
+
+### Implemented
+
+1. **Search bar**
+   - Text field under the summary on All Expenses
+   - Case-insensitive match on description
+   - Works together with category chips
+   - Summary total updates to match filtered results
+   - Clear button when text is present
+   - Files:
+     - `components/Expenses/ExpenseSearchBar.js`
+     - `components/Expenses/ExpensesOutput.js` (`enableSearch`)
+     - `screens/AllExpenses.js` (enabled)

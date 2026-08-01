@@ -5,6 +5,7 @@ import { GlobalStyles } from "../../constants/styles";
 import { CATEGORIES } from "../../constants/categories";
 import ExpensesSummary from "./ExpensesSummary";
 import ExpensesList from "./ExpensesList";
+import ExpenseSearchBar from "./ExpenseSearchBar";
 
 function ExpensesOutput({
   expenses,
@@ -12,29 +13,45 @@ function ExpensesOutput({
   fallbackText,
   initialCategory = "all",
   categoryRequestId = 0,
+  enableSearch = false,
 }) {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     setSelectedCategory(initialCategory || "all");
   }, [initialCategory, categoryRequestId]);
 
-  const filteredExpenses =
-    selectedCategory === "all"
-      ? expenses
-      : expenses.filter((expense) => expense.category === selectedCategory);
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+
+  const filteredExpenses = expenses.filter((expense) => {
+    const matchesCategory =
+      selectedCategory === "all" || expense.category === selectedCategory;
+    const matchesSearch =
+      !normalizedQuery ||
+      expense.description.toLowerCase().includes(normalizedQuery);
+
+    return matchesCategory && matchesSearch;
+  });
 
   let content = <Text style={styles.infoText}>{fallbackText}</Text>;
 
   if (filteredExpenses.length > 0) {
     content = <ExpensesList expenses={filteredExpenses} />;
   } else if (expenses.length > 0) {
-    content = <Text style={styles.infoText}>No expenses in this category.</Text>;
+    if (normalizedQuery) {
+      content = <Text style={styles.infoText}>No expenses match your search.</Text>;
+    } else {
+      content = <Text style={styles.infoText}>No expenses in this category.</Text>;
+    }
   }
 
   return (
     <View style={styles.container}>
       <ExpensesSummary periodName={periodName} expenses={filteredExpenses} />
+      {enableSearch && (
+        <ExpenseSearchBar value={searchQuery} onChangeText={setSearchQuery} />
+      )}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
