@@ -26,7 +26,7 @@ function ExpenseItem({ id, description, amount, date, category }) {
             <Ionicons
               name={getCategoryIcon(category)}
               size={12}
-              color={GlobalStyles.colors.accent500}
+              color={GlobalStyles.colors.primary500}
             />
             <Text style={styles.category}>{getCategoryLabel(category)}</Text>
           </View>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 4,
     marginTop: 8,
-    backgroundColor: GlobalStyles.colors.accentSoft,
+    backgroundColor: GlobalStyles.colors.primary50,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 999,
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   category: {
     fontSize: 12,
     fontWeight: "700",
-    color: GlobalStyles.colors.accent500,
+    color: GlobalStyles.colors.primary500,
   },
   amountContainer: {
     paddingVertical: 10,
