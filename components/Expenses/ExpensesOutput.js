@@ -6,6 +6,8 @@ import { CATEGORIES } from "../../constants/categories";
 import ExpensesSummary from "./ExpensesSummary";
 import ExpensesList from "./ExpensesList";
 import ExpenseSearchBar from "./ExpenseSearchBar";
+import ExpenseSortBar from "./ExpenseSortBar";
+import { DEFAULT_SORT, sortExpenses } from "../../util/sort";
 
 function ExpensesOutput({
   expenses,
@@ -17,6 +19,7 @@ function ExpensesOutput({
 }) {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedSort, setSelectedSort] = useState(DEFAULT_SORT);
 
   useEffect(() => {
     setSelectedCategory(initialCategory || "all");
@@ -34,10 +37,12 @@ function ExpensesOutput({
     return matchesCategory && matchesSearch;
   });
 
+  const displayedExpenses = sortExpenses(filteredExpenses, selectedSort);
+
   let content = <Text style={styles.infoText}>{fallbackText}</Text>;
 
-  if (filteredExpenses.length > 0) {
-    content = <ExpensesList expenses={filteredExpenses} />;
+  if (displayedExpenses.length > 0) {
+    content = <ExpensesList expenses={displayedExpenses} />;
   } else if (expenses.length > 0) {
     if (normalizedQuery) {
       content = <Text style={styles.infoText}>No expenses match your search.</Text>;
@@ -48,7 +53,7 @@ function ExpensesOutput({
 
   return (
     <View style={styles.container}>
-      <ExpensesSummary periodName={periodName} expenses={filteredExpenses} />
+      <ExpensesSummary periodName={periodName} expenses={displayedExpenses} />
       {enableSearch && (
         <ExpenseSearchBar value={searchQuery} onChangeText={setSearchQuery} />
       )}
@@ -100,6 +105,7 @@ function ExpensesOutput({
           );
         })}
       </ScrollView>
+      <ExpenseSortBar selectedSort={selectedSort} onSelectSort={setSelectedSort} />
       {content}
     </View>
   );
@@ -118,7 +124,7 @@ const styles = StyleSheet.create({
   filterScroll: {
     flexGrow: 0,
     marginTop: 14,
-    marginBottom: 8,
+    marginBottom: 0,
   },
   filterRow: {
     gap: 8,

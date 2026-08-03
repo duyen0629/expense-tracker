@@ -98,3 +98,19 @@ Search expenses by description on the **All** tab.
      - `components/Expenses/ExpenseSearchBar.js`
      - `components/Expenses/ExpensesOutput.js` (`enableSearch`)
      - `screens/AllExpenses.js` (enabled)
+
+## Sort expenses
+
+Reorder the expense list on **Recent** and **All**.
+
+### Implemented
+
+1. **Sort chips**
+   - Options: Newest, Oldest, Highest, Lowest
+   - Default: Newest first
+   - Applies after category filter and search
+   - Summary total still matches the filtered set (sort only changes order)
+   - Files:
+     - `util/sort.js`
+     - `components/Expenses/ExpenseSortBar.js`
+     - `components/Expenses/ExpensesOutput.js` (wired)
