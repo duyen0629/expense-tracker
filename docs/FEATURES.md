@@ -114,3 +114,15 @@ Reorder the expense list on **Recent** and **All**.
      - `util/sort.js`
      - `components/Expenses/ExpenseSortBar.js`
      - `components/Expenses/ExpensesOutput.js` (wired)
+
+## Expense count in summary
+
+Show how many expenses are included in the summary total.
+
+### Implemented
+
+1. **Count under period label**
+   - Summary card shows e.g. `4 expenses` under “Last 7 Days” / “Total”
+   - Updates with category filter and search
+   - Files:
+     - `components/Expenses/ExpensesSummary.js`
