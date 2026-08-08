@@ -126,3 +126,18 @@ Show how many expenses are included in the summary total.
    - Updates with category filter and search
    - Files:
      - `components/Expenses/ExpensesSummary.js`
+
+## Friendly dates
+
+Show readable dates on expense list rows.
+
+### Implemented
+
+1. **Display labels**
+   - `Today` / `Yesterday` for recent days
+   - Weekday name within the last week (e.g. Monday)
+   - Otherwise short date (e.g. Jul 25)
+   - Form date picker still uses the numeric `YYYY-M-D` format
+   - Files:
+     - `util/date.js` (`getDisplayDate`)
+     - `components/Expenses/ExpenseItem.js`

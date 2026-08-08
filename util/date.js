@@ -13,3 +13,32 @@ export const parseFormattedDate = (dateString) => {
 export const getDateMinusDays = (date, days) => {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() - days);
 };
+
+function startOfDay(date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+/**
+ * Human-friendly date for list rows: Today, Yesterday, weekday, or short date.
+ */
+export const getDisplayDate = (date, now = new Date()) => {
+  const expenseDay = startOfDay(new Date(date));
+  const today = startOfDay(now);
+  const dayDiff = Math.round((today - expenseDay) / (1000 * 60 * 60 * 24));
+
+  if (dayDiff === 0) {
+    return "Today";
+  }
+  if (dayDiff === 1) {
+    return "Yesterday";
+  }
+  if (dayDiff > 1 && dayDiff < 7) {
+    return expenseDay.toLocaleDateString(undefined, { weekday: "long" });
+  }
+
+  return expenseDay.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: expenseDay.getFullYear() !== today.getFullYear() ? "numeric" : undefined,
+  });
+};

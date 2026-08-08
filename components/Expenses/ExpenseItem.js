@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles } from "../../constants/styles";
-import { getFormattedDate } from "../../util/date";
+import { getDisplayDate } from "../../util/date";
 import { getCategoryLabel, getCategoryIcon } from "../../constants/categories";
 import { useNavigation } from "@react-navigation/native";
 
@@ -21,7 +21,7 @@ function ExpenseItem({ id, description, amount, date, category }) {
       <View style={styles.expenseItem}>
         <View style={styles.details}>
           <Text style={[styles.textBase, styles.description]}>{description}</Text>
-          <Text style={styles.dateText}>{getFormattedDate(date)}</Text>
+          <Text style={styles.dateText}>{getDisplayDate(date)}</Text>
           <View style={styles.categoryBadge}>
             <Ionicons
               name={getCategoryIcon(category)}
